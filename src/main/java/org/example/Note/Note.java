@@ -4,7 +4,6 @@ public class Note {
 
     private final NoteName name;
     private final int octaves;
-    // 1. Quitamos 'final' para que sea modificable, y cambiamos a tu Enum 'Accidentals'
     private Accidentals accidental;
 
     // Constructor principal
@@ -14,12 +13,12 @@ public class Note {
         this.octaves = octaves;
     }
 
-    // 2. El setter ahora funciona perfectamente porque la variable ya no es final
+    // Metodo para manejar las alteraciones en los semitonos
     public void setAccidental(Accidentals accidental){
         this.accidental = accidental;
     }
 
-    // 3. El método estático se limpia: crea la nota por defecto (Sostenidos para teclas negras)
+    // Me devuelve la nota desde un valor/codigo midi
     public static Note getNote(int midiValue) {
         if (midiValue < 0 || midiValue > 127) {
             throw new IllegalArgumentException("El número MIDI debe estar entre 0 y 127");
@@ -28,7 +27,7 @@ public class Note {
         int notaEnOctava = midiValue % 12;
         int octava = (midiValue / 12) - 1;
 
-        // Quitamos los condicionales con 'this'. Este método solo genera la nota base por defecto.
+        //Generamos la nota natural para las teclas blancas y por defecto sostenidas para las negras
         return switch (notaEnOctava) {
             case 0  -> new Note(NoteName.C, Accidentals.NATURAL, octava);
             case 1  -> new Note(NoteName.C, Accidentals.SHARP, octava); // C# por defecto
@@ -78,4 +77,9 @@ public class Note {
         };
         return name.name() + simboloAlteracion + octaves + " (MIDI: " + getMidi() + ")";
     }
+
+    public NoteName getName() {
+        return this.name;
+    }
+
 }
